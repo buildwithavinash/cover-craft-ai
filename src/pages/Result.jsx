@@ -43,13 +43,15 @@ const Result = () => {
   };
 
   return (
-    <div>
+    <div className="max-w-6xl p-4 mx-auto">
         
-        <div className="border border-slate-300 rounded-xl shadow-md bg-white p-5">
+        <div className="border border-slate-300 rounded-xl shadow-md bg-white p-4">
           <div className="flex justify-between text-xl items-center">
-            <h2>Generated Output</h2>
+            <h2 className="text-base font-medium">Generated Output</h2>
 
-            {copied && <span>Copied!</span>}
+
+            <div className="relative flex gap-1 text-base">
+            {copied && <span className="absolute text-xs top-1 right-1 border border-sky-400 bg-sky-100 text-sky-400 px-2 py-1 rounded-full">Copied!</span>}
             <button
               onClick={handleCopy}
               className="cursor-pointer hover:bg-slate-300  rounded-md px-2 py-0.5 transition-all duration-200"
@@ -82,9 +84,11 @@ const Result = () => {
                 }
               }}
               disabled={!lastProcessedData}
+              className="cursor-pointer hover:bg-slate-300  rounded-md px-2 py-0.5 transition-all duration-200"
             >
               <i className="ri-restart-line"></i>
             </button>
+            </div>
           </div>
 
           {isEditing ? (
