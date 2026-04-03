@@ -8,10 +8,10 @@ const Header = () => {
 
         <div className="flex gap-2">
           <button>
-            <i class="ri-moon-fill"></i>
+            <i className="ri-moon-fill"></i>
           </button>
           <button>
-            <i class="ri-menu-line"></i>
+            <i className="ri-menu-line"></i>
           </button>
         </div>
       </div>

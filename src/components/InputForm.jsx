@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { generateContent } from "../utils/api";
 
 
 const initialForm = {
@@ -13,6 +14,9 @@ const initialForm = {
 const InputForm = () => {
 
     const [form, setForm] = useState(initialForm);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [result, setResult] = useState("");
 
     const handleChange = (e) => {
     const {name, value} = e.target;
@@ -27,16 +31,29 @@ const isFormValid = form.jd.trim() && form.skills.trim() && form.experience.trim
     
 
 // handle submit
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     if(!isFormValid) return;
 
-    
+
     const skillsArray = form.skills.split(",").map((skill) => skill.trim()).filter((skill)=>skill !== "");
 console.log(skillsArray);
 
     const processedData = {
         ...form, skills: skillsArray
+    }
+
+    try {
+        setLoading(true);
+        setError(null);
+
+        const response = await generateContent(processedData);
+        setResult(response)
+    }catch(error){
+        console.error(error)
+        setError("Soemthing went wrong. Try again.")
+    }finally {
+        setLoading(false)
     }
 
 }
@@ -77,7 +94,23 @@ console.log(skillsArray);
             <button type="submit" disabled={!isFormValid} className="border border-slate-400 px-4 py-2 rounded-xl bg-sky-500 cursor-pointer disabled:bg-sky-700">Generate</button>
             <pre>{JSON.stringify(form, null, 2)}</pre>
         </form>
+
+        {loading && (
+        <p>Crafting your Letter....</p>
+    )}
+
+    {error && (
+        <p>{error}</p>
+    )}
+
+    {result && (
+        <div>
+            {result}
+        </div>
+    )}
     </div>
+
+    
   )
 }
 
