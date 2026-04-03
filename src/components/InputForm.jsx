@@ -17,6 +17,11 @@ const InputForm = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [result, setResult] = useState("");
+    const count = Number(localStorage.getItem("count")) || 0;
+
+
+
+    
 
     const handleChange = (e) => {
     const {name, value} = e.target;
@@ -36,6 +41,11 @@ const handleSubmit = async (e) => {
     if(!isFormValid) return;
     if(loading) return
 
+    if(count >= 3){
+        setError("Limit Reached. Try later.")
+        return
+    }
+
 
     const skillsArray = form.skills.split(",").map((skill) => skill.trim()).filter((skill)=>skill !== "");
 console.log(skillsArray);
@@ -50,6 +60,7 @@ console.log(skillsArray);
 
         const response = await generateContent(processedData);
         setResult(response)
+        localStorage.setItem("count", count + 1)
     }catch(error){
         console.error(error)
         setError("Soemthing went wrong. Try again.")
@@ -93,7 +104,7 @@ console.log(skillsArray);
             )}
             
             <button type="submit" disabled={!isFormValid || loading} className="border border-slate-400 px-4 py-2 rounded-xl bg-sky-500 cursor-pointer disabled:bg-sky-700">{loading ? "Generating" : "Generate"}</button>
-            
+            <p>Generations Left: {3-count}</p>
         </form>
 
         {loading && (
