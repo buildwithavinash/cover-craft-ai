@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import { generateContent } from "../utils/api";
 
-const initialForm = {
-  jd: "",
-  skills: "",
-  experience: "",
-  tone: "formal",
-  output: "cover",
-};
-
 const InputForm = () => {
+  const initialForm = {
+    jd: "",
+    skills: "",
+    experience: "",
+    tone: "formal",
+    output: "cover",
+  };
+``
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState("");
-  const count = Number(localStorage.getItem("count")) || 0;
+  //   const count = Number(localStorage.getItem("count")) || 0;
   const [dots, setDots] = useState("");
   const [copied, setCopied] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState("");
+  const [lastProcessedData, setLastProcessedData] = useState(null);
 
   useEffect(() => {
     if (!loading) return;
@@ -44,14 +47,13 @@ const InputForm = () => {
   // handle submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setForm(initialForm);
     if (!isFormValid) return;
     if (loading) return;
 
-    if (count >= 3) {
-      setError("Limit Reached. Try later.");
-      return;
-    }
+    // if (count >= 3) {
+    //   setError("Limit Reached. Try later.");
+    //   return;
+    // }
 
     const skillsArray = form.skills
       .split(",")
@@ -64,19 +66,8 @@ const InputForm = () => {
       skills: skillsArray,
     };
 
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await generateContent(processedData);
-      setResult(response);
-      localStorage.setItem("count", count + 1);
-    } catch (error) {
-      console.error(error);
-      setError("Soemthing went wrong. Try again.");
-    } finally {
-      setLoading(false);
-    }
+    setLastProcessedData(processedData);
+    getResponse(processedData);
   };
 
   const handleCopy = async () => {
@@ -89,6 +80,27 @@ const InputForm = () => {
       }, 1500);
     } catch (err) {
       console.error("Copy Failed", err);
+    }
+  };
+
+  // fetch data
+
+  const getResponse = async (processedData) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await generateContent(processedData);
+      setResult(response);
+      setEditedText(response);
+
+      setForm(initialForm);
+      //   localStorage.setItem("count", count + 1);
+    } catch (error) {
+      console.error(error);
+      setError("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -142,7 +154,12 @@ const InputForm = () => {
           <label htmlFor="output" className="font-medium">
             Output:{" "}
           </label>
-          <select name="output" value={form.output} onChange={handleChange} className="w-full border outline-none border-slate-300 focus:border-sky-400 p-1 rounded-md">
+          <select
+            name="output"
+            value={form.output}
+            onChange={handleChange}
+            className="w-full border outline-none border-slate-300 focus:border-sky-400 p-1 rounded-md"
+          >
             <option value="cover">Cover Letter</option>
             <option value="email">Cold Email</option>
             <option value="both">Both</option>
@@ -150,22 +167,21 @@ const InputForm = () => {
         </div>
 
         {!isFormValid && (
-          
-            <span className="border flex justify-center gap-1 items-baseline text-xs border-yellow-300 rounded-md p-1 bg-yellow-100 text-yellow-700"><i class="ri-error-warning-line"></i> Fill all the fields</span>
-         
+          <span className="border flex justify-center gap-1 items-baseline text-xs border-yellow-300 rounded-md p-1 bg-yellow-100 text-yellow-700">
+            <i className="ri-error-warning-line"></i> Fill all the fields
+          </span>
         )}
 
         <div className="flex justify-between items-center">
-            <p className="font-medium">Generations Left: {3 - count}</p>
-            <button
-          type="submit"
-          disabled={!isFormValid || loading}
-          className="border border-slate-400 px-4 py-2 rounded-xl bg-sky-400 cursor-pointer disabled:bg-sky-600 font-medium text-slate-200"
-        >
-          {loading ? "Generating" : "Generate"}
-        </button>
+          {/* <p className="font-medium">Generations Left: {3 - count}</p> */}
+          <button
+            type="submit"
+            disabled={!isFormValid || loading}
+            className="border border-slate-400 px-4 py-2 rounded-xl bg-sky-400 cursor-pointer disabled:opacity-70 font-medium text-slate-200"
+          >
+            {loading ? "Generating" : "Generate"}
+          </button>
         </div>
-        
       </form>
 
       {loading && <p>Crafting your Letter{dots}</p>}
@@ -182,11 +198,44 @@ const InputForm = () => {
               onClick={handleCopy}
               className="cursor-pointer hover:bg-slate-300  rounded-md px-2 py-0.5 transition-all duration-200"
             >
-              <i class="ri-file-copy-line"></i>
+              <i className="ri-file-copy-line"></i>
+            </button>
+
+            <button
+              onClick={() => {
+                setIsEditing((prev) => !prev);
+                isEditing ? setResult(editedText) : null;
+              }}
+              className="cursor-pointer hover:bg-slate-300  rounded-md px-2 py-0.5 transition-all duration-200"
+            >
+              {isEditing ? (
+                <i className="ri-save-fill"></i>
+              ) : (
+                <i className="ri-edit-fill"></i>
+              )}
+            </button>
+
+            <button
+              onClick={() => {
+                if (lastProcessedData) {
+                  getResponse(lastProcessedData);
+                }
+              }}
+              disabled={!lastProcessedData}
+            >
+              <i className="ri-restart-line"></i>
             </button>
           </div>
 
-          <p className="whitespace-pre-line mt-4">{result}</p>
+          {isEditing ? (
+            <textarea
+              value={editedText}
+              onChange={(e) => setEditedText(e.target.value)}
+              className="h-200 w-full resize-none mt-4"
+            ></textarea>
+          ) : (
+            <p className="whitespace-pre-line mt-4">{result}</p>
+          )}
         </div>
       )}
     </div>
