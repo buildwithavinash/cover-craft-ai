@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { generateContent } from "../utils/api";
 
 
@@ -18,10 +18,18 @@ const InputForm = () => {
     const [error, setError] = useState(null);
     const [result, setResult] = useState("");
     const count = Number(localStorage.getItem("count")) || 0;
+    const [dots, setDots] = useState("");
+    const [copied, setCopied] = useState(false);
 
+    useEffect(()=>{
+        if(!loading) return;
 
+        const interval = setInterval(()=>{
+            setDots((prev)=> prev.length >= 3 ? "" : prev + ". ")
+        }, 400)
 
-    
+        return ()=> clearInterval(interval)
+    }, [loading])
 
     const handleChange = (e) => {
     const {name, value} = e.target;
@@ -38,6 +46,7 @@ const isFormValid = form.jd.trim() && form.skills.trim() && form.experience.trim
 // handle submit
 const handleSubmit = async (e) => {
     e.preventDefault();
+    setForm(initialForm)
     if(!isFormValid) return;
     if(loading) return
 
@@ -70,6 +79,18 @@ console.log(skillsArray);
 
 }
 
+const handleCopy = async () => {
+    try {
+        await navigator.clipboard.writeText(result);
+        setCopied(true);
+
+        setTimeout(() => {
+            setCopied(false)
+        }, 1500);
+    }catch(err){
+        console.error("Copy Failed", err)
+    }
+}
 
 
   return (
@@ -108,7 +129,7 @@ console.log(skillsArray);
         </form>
 
         {loading && (
-        <p>Crafting your Letter....</p>
+        <p>Crafting your Letter{dots}</p>
     )}
 
     {error && (
@@ -116,8 +137,20 @@ console.log(skillsArray);
     )}
 
     {result && (
-        <div>
+        <div className="border border-slate-300 rounded-xl shadow-md bg-white p-5">
+            <div className="flex justify-between text-xl items-center">
+                <h2>Generated Output</h2>
+
+                {copied && (
+                    <span>Copied!</span>
+                )}
+                <button onClick={handleCopy} className="cursor-pointer hover:bg-slate-300  rounded-md px-2 py-0.5 transition-all duration-200"><i class="ri-file-copy-line"></i></button>
+
+            </div>
+
+            <p className="whitespace-pre-line mt-4">
             {result}
+            </p>
         </div>
     )}
     </div>
