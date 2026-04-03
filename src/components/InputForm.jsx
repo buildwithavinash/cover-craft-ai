@@ -34,6 +34,7 @@ const isFormValid = form.jd.trim() && form.skills.trim() && form.experience.trim
 const handleSubmit = async (e) => {
     e.preventDefault();
     if(!isFormValid) return;
+    if(loading) return
 
 
     const skillsArray = form.skills.split(",").map((skill) => skill.trim()).filter((skill)=>skill !== "");
@@ -62,7 +63,7 @@ console.log(skillsArray);
 
   return (
     <div className="">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
             <textarea name="jd" value={form.jd} onChange={handleChange} placeholder="Enter Job Description" />
             <input type="text" name="skills" value={form.skills} onChange={handleChange} placeholder="Enter Skills" />
             <textarea name="experience" value={form.experience} onChange={handleChange} placeholder="Enter Experience" />
@@ -91,8 +92,8 @@ console.log(skillsArray);
             </div>  
             )}
             
-            <button type="submit" disabled={!isFormValid} className="border border-slate-400 px-4 py-2 rounded-xl bg-sky-500 cursor-pointer disabled:bg-sky-700">Generate</button>
-            <pre>{JSON.stringify(form, null, 2)}</pre>
+            <button type="submit" disabled={!isFormValid || loading} className="border border-slate-400 px-4 py-2 rounded-xl bg-sky-500 cursor-pointer disabled:bg-sky-700">{loading ? "Generating" : "Generate"}</button>
+            
         </form>
 
         {loading && (
