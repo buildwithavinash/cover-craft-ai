@@ -1,7 +1,12 @@
+import Header from "./components/Header"
+import InputForm from "./components/InputForm"
 
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Header />
+      <InputForm />
+    </div>
   )
 }
 
