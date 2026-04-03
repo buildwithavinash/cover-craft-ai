@@ -179,7 +179,6 @@ const InputForm = () => {
 
       {error && <p>{error}</p>}
 
-        {/* Result page is now only rendered via routing, not inline here. */}
     </div>
   );
 };
