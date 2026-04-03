@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { generateContent } from "../utils/api";
+// import Result from "./Result";
+import { useNavigate } from "react-router-dom";
 
 const InputForm = () => {
   const initialForm = {
@@ -13,13 +15,11 @@ const InputForm = () => {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [result, setResult] = useState("");
   //   const count = Number(localStorage.getItem("count")) || 0;
   const [dots, setDots] = useState("");
-  const [copied, setCopied] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedText, setEditedText] = useState("");
-  const [lastProcessedData, setLastProcessedData] = useState(null);
+  // lastProcessedData is not needed here; it's passed via router state.
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!loading) return;
@@ -66,22 +66,10 @@ const InputForm = () => {
       skills: skillsArray,
     };
 
-    setLastProcessedData(processedData);
     getResponse(processedData);
   };
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(result);
-      setCopied(true);
-
-      setTimeout(() => {
-        setCopied(false);
-      }, 1500);
-    } catch (err) {
-      console.error("Copy Failed", err);
-    }
-  };
+  
 
   // fetch data
 
@@ -91,9 +79,12 @@ const InputForm = () => {
       setError(null);
 
       const response = await generateContent(processedData);
-      setResult(response);
-      setEditedText(response);
-
+      navigate("/result", {
+        state: {
+          result: response,
+          processedData
+        }
+      })
       setForm(initialForm);
       //   localStorage.setItem("count", count + 1);
     } catch (error) {
@@ -105,11 +96,11 @@ const InputForm = () => {
   };
 
   return (
-    <div className="">
+    <div className="max-w-6xl px-4 mx-auto">
       <form
         onSubmit={handleSubmit}
         autoComplete="off"
-        className="border border-slate-300 p-4 flex flex-col gap-4"
+        className="p-4 flex flex-col gap-4"
       >
         <textarea
           name="jd"
@@ -188,56 +179,7 @@ const InputForm = () => {
 
       {error && <p>{error}</p>}
 
-      {result && (
-        <div className="border border-slate-300 rounded-xl shadow-md bg-white p-5">
-          <div className="flex justify-between text-xl items-center">
-            <h2>Generated Output</h2>
-
-            {copied && <span>Copied!</span>}
-            <button
-              onClick={handleCopy}
-              className="cursor-pointer hover:bg-slate-300  rounded-md px-2 py-0.5 transition-all duration-200"
-            >
-              <i className="ri-file-copy-line"></i>
-            </button>
-
-            <button
-              onClick={() => {
-                setIsEditing((prev) => !prev);
-                isEditing ? setResult(editedText) : null;
-              }}
-              className="cursor-pointer hover:bg-slate-300  rounded-md px-2 py-0.5 transition-all duration-200"
-            >
-              {isEditing ? (
-                <i className="ri-save-fill"></i>
-              ) : (
-                <i className="ri-edit-fill"></i>
-              )}
-            </button>
-
-            <button
-              onClick={() => {
-                if (lastProcessedData) {
-                  getResponse(lastProcessedData);
-                }
-              }}
-              disabled={!lastProcessedData}
-            >
-              <i className="ri-restart-line"></i>
-            </button>
-          </div>
-
-          {isEditing ? (
-            <textarea
-              value={editedText}
-              onChange={(e) => setEditedText(e.target.value)}
-              className="h-200 w-full resize-none mt-4"
-            ></textarea>
-          ) : (
-            <p className="whitespace-pre-line mt-4">{result}</p>
-          )}
-        </div>
-      )}
+        {/* Result page is now only rendered via routing, not inline here. */}
     </div>
   );
 };
