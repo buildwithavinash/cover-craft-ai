@@ -79,6 +79,16 @@ const InputForm = () => {
       setError(null);
 
       const response = await generateContent(processedData);
+      const newItem = {
+        id: crypto.randomUUID(),
+        text: response,
+        createdAt: new Date().toISOString(),
+      }
+
+      const prev = JSON.parse(localStorage.getItem("results")) || [];
+
+      const updated = [newItem, ...prev].slice(0, 10);
+      localStorage.setItem("results", JSON.stringify(updated));
       navigate("/result", {
         state: {
           result: response,

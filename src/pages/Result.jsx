@@ -43,7 +43,7 @@ const Result = () => {
   };
 
   return (
-    <div className="max-w-6xl p-4 mx-auto">
+    <div className="max-w-6xl p-4 mx-auto md:w-[60%]">
         
         <div className="border border-slate-300 rounded-xl shadow-md bg-white p-4">
           <div className="flex justify-between text-xl items-center border-b pb-2 border-slate-200">
@@ -95,7 +95,7 @@ const Result = () => {
             <textarea
               value={editedText}
               onChange={(e) => setEditedText(e.target.value)}
-              className="h-200 w-full resize-none mt-4"
+              className="h-200  md:h-100 w-full resize-none mt-4"
             ></textarea>
           ) : (
             <p className="whitespace-pre-line mt-4">{displayedResult}</p>
