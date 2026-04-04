@@ -10,6 +10,9 @@ const Header = () => {
         </div>
 
         <div className="flex gap-2">
+          <button onClick={()=>navigate("/history")}>
+            History
+          </button>
           <button>
             <i className="ri-moon-fill"></i>
           </button>
