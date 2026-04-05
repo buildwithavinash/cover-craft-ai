@@ -6,6 +6,7 @@ import Form from "./pages/Form";
 import Result from "./pages/Result";
 import History from "./pages/History";
 import Detail from "./pages/Detail";
+import FloatingBar from "./components/FloatingBar";
 
 
 const NotFound = () => {
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/detail/:id" element={<Detail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <FloatingBar />
       </main>
     </BrowserRouter>
   );

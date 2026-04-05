@@ -11,7 +11,7 @@ const Header = ({onToggle, dark}) => {
         <div>
           <h2
             onClick={() => navigate("/")}
-            className="cursor-pointer text-2xl text-emerald-400 dark:text-emerald-400 font-semibold md:text-3xl"
+            className="cursor-pointer text-2xl text-emerald-500 dark:text-emerald-400 font-semibold md:text-3xl"
           >
             CoverCraftAI
           </h2>

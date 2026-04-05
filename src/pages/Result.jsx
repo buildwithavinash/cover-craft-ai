@@ -90,7 +90,7 @@ const Result = () => {
             <button
               onClick={handleCopy}
               title="Copy"
-              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200"
+              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200 dark:text-slate-300 dark:hover:text-slate-800"
             >
               <i className="ri-file-copy-line"></i>
             </button>
@@ -99,7 +99,7 @@ const Result = () => {
             <button
               onClick={handleEditSave}
               title={isEditing ? "Save" : "Edit"}
-              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200"
+              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200 dark:text-slate-300 dark:hover:text-slate-800"
             >
               {isEditing ? (
                 <i className="ri-save-fill"></i>
@@ -115,7 +115,7 @@ const Result = () => {
               }}
               disabled={!lastProcessedData || regenLoading}
               title="Regenerate"
-              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed dark:text-slate-300 dark:hover:text-slate-800"
             >
               {regenLoading ? (
                 <i className="ri-loader-4-line animate-spin"></i>
@@ -138,10 +138,10 @@ const Result = () => {
           <textarea
             value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
-            className="h-96 w-full resize-none mt-4 border border-slate-300 rounded p-2 outline-none focus:border-emerald-400 transition-all duration-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600"
+            className="h-100  md:h-96 w-full resize-none mt-4 border border-slate-300 rounded p-2 outline-none focus:border-emerald-400 transition-all duration-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600"
           />
         ) : (
-          <p className="whitespace-pre-line mt-4">{displayedResult}</p>
+          <p className="whitespace-pre-line mt-4 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600 p-2 rounded-md">{displayedResult}</p>
         )}
       </div>
     </div>
