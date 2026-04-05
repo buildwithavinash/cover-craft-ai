@@ -6,7 +6,7 @@ const Header = ({onToggle, dark}) => {
 
   const navigate = useNavigate();
   return (
-    <div className="border-b border-slate-200 sticky top-0 left-0 right-0 w-full bg-white/80 backdrop-blur-3xl z-50 dark:bg-slate-950 dark:border-slate-500/90 dark:backdrop-blur-3xl">
+    <div className="border-b border-slate-200 sticky top-0 left-0 right-0 w-full bg-white/80 backdrop-blur-3xl z-100 dark:bg-slate-950 dark:border-slate-900 dark:backdrop-blur-3xl">
       <div className="container max-w-6xl px-4 mx-auto flex justify-between py-2 items-center">
         <div>
           <h2

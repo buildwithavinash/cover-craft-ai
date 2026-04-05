@@ -132,7 +132,7 @@ const Result = () => {
 
         {regenLoading ? (
           <div className="flex justify-center items-center mt-8 mb-4">
-            <Loader />
+            <p className="dark:text-emerald-500 text-emerald-400 font-medium">Re-Crafting your letter...</p>
           </div>
         ) : isEditing ? (
           <textarea

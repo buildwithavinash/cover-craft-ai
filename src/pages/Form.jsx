@@ -99,7 +99,7 @@ const InputForm = () => {
       <form
         onSubmit={handleSubmit}
         autoComplete="off"
-        className="p-4 flex flex-col gap-4 md:w-[60%] mx-auto relative pb-8"
+        className="p-4 flex flex-col gap-4 md:w-[60%] mx-auto relative pb-20"
       >
         <textarea
           name="jd"

@@ -25,7 +25,7 @@ const Landing = () => {
 
       {/* How It Works Section */}
       <section className="mt-16">
-        <h2 className="text-2xl font-semibold text-center mb-8">
+        <h2 className="text-2xl font-semibold text-center mb-8 dark:text-slate-200">
           How It Works
         </h2>
         <div className="grid md:grid-cols-3 gap-8">

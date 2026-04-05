@@ -47,7 +47,7 @@ const Detail = () => {
             <button
               onClick={handleCopy}
               title="Copy"
-              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200 text-xl"
+              className="cursor-pointer hover:bg-slate-300 rounded-md px-2 py-0.5 transition-all duration-200 text-xl dark:text-slate-200 dark:hover:text-slate-800 dark:hover:bg-slate-200"
             >
               <i className="ri-file-copy-line"></i>
             </button>
