@@ -85,13 +85,13 @@ const InputForm = () => {
   };
 
   return (
-    <div className="max-w-6xl px-4 mx-auto relative">
+    <div className="max-w-6xl px-4 mx-auto relative pb-8">
       {/* Tagline Section */}
-      <div className="text-center mt-8 mb-4">
-        <h2 className="text-2xl md:text-3xl font-semibold text-emerald-700 mb-2">
+      <div className="text-center pt-8 mb-4">
+        <h2 className="text-2xl md:text-3xl font-semibold text-emerald-600 dark:text-emerald-400 mb-2">
           Land your dream job with a personalized cover letter
         </h2>
-        <p className="text-slate-600 text-base md:text-lg">
+        <p className="text-slate-600 dark:text-slate-400 text-base md:text-lg">
           Let AI craft a professional, tailored introduction for you in seconds.
         </p>
       </div>
@@ -99,14 +99,14 @@ const InputForm = () => {
       <form
         onSubmit={handleSubmit}
         autoComplete="off"
-        className="p-4 flex flex-col gap-4 md:w-[60%] mx-auto"
+        className="p-4 flex flex-col gap-4 md:w-[60%] mx-auto relative pb-8"
       >
         <textarea
           name="jd"
           value={form.jd}
           onChange={handleChange}
           placeholder="Enter Job Description"
-          className="h-40 p-2 w-full border border-slate-300 focus:border-emerald-400 rounded resize-none outline-none transition-all duration-200"
+          className="h-40 p-2 w-full border border-slate-300 focus:border-emerald-400 placeholder:text-slate-700 rounded resize-none outline-none transition-all duration-200  text-slate-900 dark:placeholder:text-slate-400 dark:text-slate-200 dark:bg-slate-900 dark:border-slate-600"
         />
         <input
           type="text"
@@ -114,25 +114,28 @@ const InputForm = () => {
           value={form.skills}
           onChange={handleChange}
           placeholder="Enter Skills (comma separated)"
-          className="w-full p-2 border border-slate-300 focus:border-emerald-400 rounded outline-none transition-all duration-200"
+          className="w-full p-2 border border-slate-300 focus:border-emerald-400 rounded outline-none placeholder:text-slate-700 transition-all duration-200 dark:placeholder:text-slate-400 text-slate-900 dark:text-slate-200 dark:bg-slate-900 dark:border-slate-600"
         />
         <textarea
           name="experience"
           value={form.experience}
           onChange={handleChange}
           placeholder="Enter Experience"
-          className="h-20 p-2 w-full border border-slate-300 focus:border-emerald-400 rounded resize-none outline-none transition-all duration-200"
+          className="h-20 p-2 w-full border border-slate-300 placeholder:text-slate-700 focus:border-emerald-400 rounded resize-none outline-none transition-all duration-200 dark:placeholder:text-slate-400 text-slate-900 dark:text-slate-200 dark:bg-slate-900 dark:border-slate-600"
         />
 
         <div className="flex items-center gap-2">
-          <label htmlFor="tone" className="font-medium">
+          <label
+            htmlFor="tone"
+            className="font-medium dark:text-slate-200 text-slate-900"
+          >
             Tone:{" "}
           </label>
           <select
             name="tone"
             value={form.tone}
             onChange={handleChange}
-            className="w-full border outline-none border-slate-300 focus:border-emerald-400 p-1 rounded-md"
+            className="w-full border outline-none border-slate-300 focus:border-emerald-400 p-1 rounded-md dark:text-slate-200 dark:bg-slate-900"
           >
             <option value="formal">Formal</option>
             <option value="friendly">Friendly</option>
@@ -141,14 +144,17 @@ const InputForm = () => {
         </div>
 
         <div className="flex items-center gap-2">
-          <label htmlFor="output" className="font-medium">
+          <label
+            htmlFor="output"
+            className="font-medium dark:text-slate-200 text-slate-900"
+          >
             Output:{" "}
           </label>
           <select
             name="output"
             value={form.output}
             onChange={handleChange}
-            className="w-full border outline-none border-slate-300 focus:border-emerald-400 p-1 rounded-md"
+            className="w-full border outline-none border-slate-300 focus:border-emerald-400 p-1 rounded-md text-slate-900 dark:text-slate-200 dark:bg-slate-900"
           >
             <option value="cover">Cover Letter</option>
             <option value="email">Cold Email</option>
@@ -162,26 +168,47 @@ const InputForm = () => {
           </span>
         )}
 
-        <div className="flex justify-between items-center">
+        <div className="flex justify-center items-center">
           <button
             type="submit"
             disabled={!isFormValid || loading}
-            className="border border-slate-400 px-4 py-2 rounded-xl bg-emerald-400 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed font-medium text-slate-200"
+            className="border border-slate-400 px-4 py-2 rounded-xl bg-emerald-400 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed font-medium text-slate-200 w-50"
           >
             {loading ? "Generating..." : "Generate"}
           </button>
         </div>
+
+        {loading && (
+          <div className="flex rounded-xl flex-col justify-center items-center absolute backdrop-blur-sm inset-0 bg-slate-200 z-50">
+            <Loader />
+          </div>
+        )}
+
+        {error && (
+          <div className="flex rounded-xl flex-col justify-center items-center absolute backdrop-blur-sm inset-0 bg-slate-200 z-50">
+            <p className="text-center text-red-500 mt-2">{error}</p>
+            <button
+              type="submit"
+              disabled={!isFormValid || loading}
+              className="border border-slate-400 px-4 py-2 rounded-xl bg-emerald-400 cursor-pointer font-medium text-slate-200 mt-4 hover:bg-emerald-600 transition-all duration-200"
+            >
+              Try Again
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setError(null)
+                navigate("/form");
+              }}
+              className="border border-slate-400 px-4 py-2 rounded-xl bg-emerald-400 cursor-pointer font-medium text-slate-200 mt-4 hover:bg-emerald-600 transition-all duration-200"
+            >
+              Back to Form
+            </button>
+          </div>
+        )}
       </form>
-
-      {loading && (
-        <div className="flex flex-col justify-center items-center mt-4 absolute backdrop-blur-sm inset-0 bg-slate-400/50 z-50">
-          <Loader />
-        </div>
-      )}
-
-      {error && (
-        <p className="text-center text-red-500 mt-2">{error}</p>
-      )}
     </div>
   );
 };

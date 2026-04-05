@@ -33,10 +33,10 @@ const History = () => {
   return (
     <div className="max-w-6xl p-4 mx-auto">
       <div>
-        <h2 className="text-center text-2xl font-medium">Your History</h2>
+        <h2 className="text-center text-2xl font-medium dark:text-slate-200">Your History</h2>
 
         {data.length === 0 ? (
-          <p className="text-center my-8 text-slate-500">No saved results yet.</p>
+          <p className="text-center my-8 text-slate-500 dark:text-slate-300">No saved results yet.</p>
         ) : (
           <>
             <div className="flex justify-end mt-6">
@@ -64,14 +64,14 @@ const History = () => {
                       e.stopPropagation();
                       handleDelete(d.id);
                     }}
-                    className="absolute top-1 right-2 cursor-pointer hover:bg-red-100 hover:text-red-500 px-2 py-0.5 rounded-md transition-all duration-200"
+                    className="absolute top-2 right-2 cursor-pointer hover:bg-red-100 hover:text-red-500 px-1 py-0.5 md:px-1 md:py-0.5 rounded-md transition-all duration-200 dark:bg-slate-200 text-xs md:text-base"
                   >
                     <i className="ri-delete-bin-6-line"></i>
                   </button>
-                  <span className="line-clamp-2 text-xs w-fit px-2 py-0.5 rounded-md text-slate-700 bg-slate-100">
+                  <span className="line-clamp-2 text-xs w-fit px-2 py-0.5 rounded-md text-slate-700 bg-slate-100 dark:bg-slate-300">
                     {new Date(d.createdAt).toLocaleString()}
                   </span>
-                  <p className="line-clamp-3 leading-tight mt-2">{d.text}</p>
+                  <p className="line-clamp-3 leading-tight mt-3 dark:text-slate-300">{d.text}</p>
                 </div>
               ))}
             </div>

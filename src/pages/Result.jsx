@@ -75,9 +75,9 @@ const Result = () => {
 
   return (
     <div className="max-w-6xl p-4 mx-auto md:w-[60%]">
-      <div className="border border-slate-300 rounded-xl shadow-md bg-white p-4">
+      <div className="border border-slate-300 rounded-xl shadow-md bg-white dark:bg-slate-900 dark:border-slate-600 p-4">
         <div className="flex justify-between text-xl items-center border-b pb-2 border-slate-200">
-          <h2 className="text-base font-medium">Generated Output</h2>
+          <h2 className="text-base font-medium dark:text-slate-200">Generated Output</h2>
 
           <div className="relative flex gap-1 text-base">
             {copied && (
@@ -138,7 +138,7 @@ const Result = () => {
           <textarea
             value={editedText}
             onChange={(e) => setEditedText(e.target.value)}
-            className="h-96 w-full resize-none mt-4 border border-slate-300 rounded p-2 outline-none focus:border-emerald-400 transition-all duration-200"
+            className="h-96 w-full resize-none mt-4 border border-slate-300 rounded p-2 outline-none focus:border-emerald-400 transition-all duration-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-600"
           />
         ) : (
           <p className="whitespace-pre-line mt-4">{displayedResult}</p>
